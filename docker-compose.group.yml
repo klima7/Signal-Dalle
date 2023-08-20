@@ -1,0 +1,16 @@
+services:
+
+  signal-group-getter:
+    image: python:3.10.9
+    command: bash -c "sleep 2 && curl -X GET 'http://signal-api-group:8080/v1/groups/${PHONE_NUMBER}' | python -m json.tool"
+    depends_on:
+      - signal-api-group
+    env_file:
+      - .env
+
+  signal-api-group:
+    image: bbernhard/signal-cli-rest-api
+    environment:
+      - MODE=json-rpc
+    volumes:
+      - ./config:/home/.local/share/signal-cli

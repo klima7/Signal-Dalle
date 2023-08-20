@@ -1,0 +1,12 @@
+services:
+
+  signal-api-connect:
+    image: bbernhard/signal-cli-rest-api
+    environment:
+      - MODE=normal
+    volumes:
+      - ./config:/home/.local/share/signal-cli
+    ports:
+      - 37899:8080
+
+# then visit http://127.0.0.1:37899/v1/qrcodelink?device_name=<device-name>

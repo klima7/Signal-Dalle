@@ -1,0 +1,19 @@
+services:
+
+  signal-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - SIGNAL_SERVICE: "signal-api:80"
+    env_file:
+      - .env
+    depends_on:
+      - signal-api
+
+  signal-api:
+    image: bbernhard/signal-cli-rest-api
+    environment:
+      - MODE: "json-rpc"
+    volumes:
+      - ./config:/home/.local/share/signal-cli

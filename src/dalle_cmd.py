@@ -14,6 +14,8 @@ class DalleCommand(Command):
         print(prompt)
         prompt = to_english(prompt)
         print(prompt)
+        await c.react('👍')
+        return
         await c.start_typing()
         image_b64 = generate_image(prompt)
         await asyncio.sleep(5)

@@ -2,7 +2,7 @@ services:
 
   signal-bot:
     build:
-      context: .
+      context: ..
       dockerfile: Dockerfile
     environment:
       - SIGNAL_SERVICE=signal-api:8080
@@ -16,4 +16,4 @@ services:
     environment:
       - MODE=json-rpc
     volumes:
-      - ./config:/home/.local/share/signal-cli
+      - ../config:/home/.local/share/signal-cli

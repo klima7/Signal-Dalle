@@ -13,4 +13,4 @@ services:
     environment:
       - MODE=json-rpc
     volumes:
-      - ./config:/home/.local/share/signal-cli
+      - ../config:/home/.local/share/signal-cli

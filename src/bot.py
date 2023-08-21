@@ -3,11 +3,10 @@ import logging
 
 from signalbot import SignalBot
 
-from dalle_cmd import DalleCommand
+from command import DalleCommand
 
 
 logging.getLogger().setLevel(logging.INFO)
-logging.getLogger("apscheduler").setLevel(logging.WARNING)
 
 
 def main():

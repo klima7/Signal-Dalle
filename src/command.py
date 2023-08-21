@@ -11,16 +11,18 @@ class DalleCommand(Command):
 
     async def handle(self, c: Context):
         prompt = c.message.text
-        print(prompt)
-        prompt = to_english(prompt)
-        print(prompt)
+        
+        if not prompt:
+            await c.react('🤔')
+            return
+        
         await c.react('👍')
-        return
+        
+        prompt_en = to_english(prompt)
         await c.start_typing()
-        image_b64 = generate_image(prompt)
-        await asyncio.sleep(5)
+        image_b64 = generate_image(prompt_en)
         await c.stop_typing()
         await c.send(
-            prompt,
+            prompt_en,
             base64_attachments=[image_b64],
         )

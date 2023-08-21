@@ -2,10 +2,10 @@ FROM python:3.10.9
 
 WORKDIR /app
 
-COPY requirements.txt requirements.txt
+COPY src/requirements.txt requirements.txt
 
 RUN pip install -r requirements.txt
 
-COPY . .
+COPY src .
 
-CMD python src/bot.py
+CMD python bot.py

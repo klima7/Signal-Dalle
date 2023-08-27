@@ -4,7 +4,6 @@ import os
 import numpy as np
 from signalbot import Command, Context
 from PIL import Image
-import cv2 as cv
 
 from dalle import create_variations
 from utils import resize_image

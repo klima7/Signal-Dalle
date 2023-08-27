@@ -5,7 +5,7 @@ import numpy as np
 from signalbot import Context
 from PIL import Image
 import cv2 as cv
-from openai import OpenAIError
+from openai import InvalidRequestError
 
 from safe_command import SafeCommand
 from dalle import edit_image
@@ -45,7 +45,7 @@ class EditCommand(SafeCommand):
         
         try:
             edited = edit_image(image, mask, prompt_en, self.EDITS_COUNT)
-        except OpenAIError:
+        except InvalidRequestError:
             await c.send(from_english('Generating this content was blocked by OpenAI 😕'))
             return
         finally:

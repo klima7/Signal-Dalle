@@ -1,7 +1,7 @@
 import os
 
 from signalbot import Context
-from openai import OpenAIError
+from openai import InvalidRequestError
 
 from safe_command import SafeCommand
 from dalle import generate_image
@@ -34,7 +34,7 @@ class CreateCommand(SafeCommand):
         
         try:
             generated = generate_image(prompt_en)
-        except OpenAIError:
+        except InvalidRequestError:
             await c.send(from_english('Generating this content was blocked by OpenAI 😕'))
             return
         finally:

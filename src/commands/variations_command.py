@@ -4,7 +4,7 @@ import os
 import numpy as np
 from signalbot import Context
 from PIL import Image
-from openai import OpenAIError
+from openai import InvalidRequestError
 
 from safe_command import SafeCommand
 from dalle import create_variations
@@ -42,7 +42,7 @@ class VariationsCommand(SafeCommand):
         
         try:
             variations = create_variations(image, self.VARIATIONS_COUNT)
-        except OpenAIError:
+        except InvalidRequestError:
             await c.send(from_english('Generating this content was blocked by OpenAI 😕'))
             return
         finally:

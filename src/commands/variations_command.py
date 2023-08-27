@@ -4,9 +4,11 @@ import os
 import numpy as np
 from signalbot import Command, Context
 from PIL import Image
+from openai import OpenAIError
 
 from dalle import create_variations
 from utils import resize_image, save_b64_images
+from translate import from_english
 
 
 class VariationsCommand(Command):
@@ -36,10 +38,17 @@ class VariationsCommand(Command):
         await c.fetch_attachment_data(attachment)
         
         image = np.array(resize_image(Image.open(io.BytesIO(attachment.data)), length=1024)) 
-        variations = create_variations(image, self.VARIATIONS_COUNT)
+        
+        try:
+            variations = create_variations(image, self.VARIATIONS_COUNT)
+        except OpenAIError:
+            await c.send(from_english('Generating this content was blocked by OpenAI 😕'))
+            return
+        finally:
+            await c.stop_typing()
+        
         save_b64_images(variations, 'variation')
         
-        await c.stop_typing()
         await c.send(
             '',
             base64_attachments=variations

@@ -19,3 +19,15 @@ def to_english(text):
         target_lang='EN-US'
     )
     return result.text
+
+
+def from_english(text):
+    if SOURCE_LANG in ['EN-GB', 'EN-US']:
+        return text
+    
+    result = translator.translate_text(
+        text,
+        source_lang='EN',
+        target_lang=SOURCE_LANG,
+    )
+    return result.text

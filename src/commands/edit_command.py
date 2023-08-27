@@ -5,9 +5,10 @@ import numpy as np
 from signalbot import Command, Context
 from PIL import Image
 import cv2 as cv
+from openai import OpenAIError
 
 from dalle import edit_image
-from translate import to_english
+from translate import to_english, from_english
 from utils import resize_image, save_b64_images
 
 
@@ -40,10 +41,17 @@ class EditCommand(Command):
         prompt_en = to_english(prompt)
         image = np.array(resize_image(Image.open(io.BytesIO(attachment.data)), length=1024)) 
         mask = self._create_mask(image)
-        edited = edit_image(image, mask, prompt_en, self.EDITS_COUNT)
+        
+        try:
+            edited = edit_image(image, mask, prompt_en, self.EDITS_COUNT)
+        except OpenAIError:
+            await c.send(from_english('Generating this content was blocked by OpenAI 😕'))
+            return
+        finally:
+            await c.stop_typing()
+        
         save_b64_images(edited, prompt_en)
         
-        await c.stop_typing()
         await c.send(
             prompt_en,
             base64_attachments=edited

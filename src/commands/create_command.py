@@ -1,9 +1,10 @@
 import os
 
 from signalbot import Command, Context
+from openai import OpenAIError
 
 from dalle import generate_image
-from translate import to_english
+from translate import to_english, from_english
 from utils import save_b64_images
 
 
@@ -29,9 +30,16 @@ class CreateCommand(Command):
         
         prompt_en = to_english(prompt)
         await c.start_typing()
-        generated = generate_image(prompt_en)
+        
+        try:
+            generated = generate_image(prompt_en)
+        except OpenAIError:
+            await c.send(from_english('Generating this content was blocked by OpenAI 😕'))
+            return
+        finally:
+            await c.stop_typing()
+        
         save_b64_images(generated, prompt)
-        await c.stop_typing()
         await c.send(
             prompt_en,
             base64_attachments=generated,

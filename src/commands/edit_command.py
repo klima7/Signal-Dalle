@@ -40,7 +40,7 @@ class EditCommand(SafeCommand):
         await c.fetch_attachment_data(attachment)
         
         prompt_en = to_english(prompt)
-        image = np.array(resize_image(Image.open(io.BytesIO(attachment.data)), length=1024)) 
+        image = np.array(resize_image(Image.open(io.BytesIO(attachment.data)), length=1024))[..., :3]
         mask = self._create_mask(image)
         
         try:

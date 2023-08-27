@@ -1,4 +1,5 @@
 import io
+import os
 
 import numpy as np
 from signalbot import Command, Context
@@ -11,7 +12,7 @@ from utils import resize_image
 
 class VariationsCommand(Command):
     
-    VARIATIONS_COUNT = 2
+    VARIATIONS_COUNT = int(os.environ.get("VARIATIONS_COUNT", 1))
     
     def describe(self) -> str:
         return "Respond with image variations created with DALL-E"

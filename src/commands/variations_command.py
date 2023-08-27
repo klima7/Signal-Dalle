@@ -2,23 +2,24 @@ import io
 import os
 
 import numpy as np
-from signalbot import Command, Context
+from signalbot import Context
 from PIL import Image
 from openai import OpenAIError
 
+from safe_command import SafeCommand
 from dalle import create_variations
 from utils import resize_image, save_b64_images
 from translate import from_english
 
 
-class VariationsCommand(Command):
+class VariationsCommand(SafeCommand):
     
     VARIATIONS_COUNT = int(os.environ.get("VARIATIONS_COUNT", 1))
     
     def describe(self) -> str:
         return "Respond with image variations created with DALL-E"
 
-    async def handle(self, c: Context):
+    async def handle_save(self, c: Context):
         prompt = c.message.text
         attachments = c.message.base64_attachments
         

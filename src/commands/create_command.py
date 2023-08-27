@@ -1,21 +1,22 @@
 import os
 
-from signalbot import Command, Context
+from signalbot import Context
 from openai import OpenAIError
 
+from safe_command import SafeCommand
 from dalle import generate_image
 from translate import to_english, from_english
 from utils import save_b64_images
 
 
-class CreateCommand(Command):
+class CreateCommand(SafeCommand):
     
     CREATES_COUNT = int(os.environ.get("CREATES_COUNT", 1))
     
     def describe(self) -> str:
         return "Respond with Dall-E generated image"
 
-    async def handle(self, c: Context):
+    async def handle_save(self, c: Context):
         prompt = c.message.text
         
         # must be text without attachments not starting with #

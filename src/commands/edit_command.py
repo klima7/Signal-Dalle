@@ -2,24 +2,25 @@ import io
 import os
 
 import numpy as np
-from signalbot import Command, Context
+from signalbot import Context
 from PIL import Image
 import cv2 as cv
 from openai import OpenAIError
 
+from safe_command import SafeCommand
 from dalle import edit_image
 from translate import to_english, from_english
 from utils import resize_image, save_b64_images
 
 
-class EditCommand(Command):
+class EditCommand(SafeCommand):
     
     EDITS_COUNT = int(os.environ.get("EDITS_COUNT", 1))
     
     def describe(self) -> str:
         return "Respond with Dall-E edited image"
 
-    async def handle(self, c: Context):
+    async def handle_save(self, c: Context):
         prompt = c.message.text
         attachments = c.message.base64_attachments
         

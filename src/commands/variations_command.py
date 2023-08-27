@@ -51,6 +51,6 @@ class VariationsCommand(SafeCommand):
         save_b64_images(variations, 'variation')
         
         await c.send(
-            '',
+            from_english('These are variants of the uploaded photo'),
             base64_attachments=variations
         )

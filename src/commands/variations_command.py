@@ -6,7 +6,7 @@ from signalbot import Command, Context
 from PIL import Image
 
 from dalle import create_variations
-from utils import resize_image
+from utils import resize_image, save_b64_images
 
 
 class VariationsCommand(Command):
@@ -37,6 +37,7 @@ class VariationsCommand(Command):
         
         image = np.array(resize_image(Image.open(io.BytesIO(attachment.data)), length=1024)) 
         variations = create_variations(image, self.VARIATIONS_COUNT)
+        save_b64_images(variations, 'variation')
         
         await c.stop_typing()
         await c.send(

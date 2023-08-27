@@ -6,6 +6,8 @@ services:
       dockerfile: Dockerfile
     environment:
       - SIGNAL_SERVICE=signal-api:8080
+    volumes:
+      - ../images:/app/images
     env_file:
       - .env
     depends_on:

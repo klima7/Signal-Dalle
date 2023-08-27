@@ -4,3 +4,4 @@ openai
 deepl
 pillow
 numpy
+python-slugify

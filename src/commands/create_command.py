@@ -4,6 +4,7 @@ from signalbot import Command, Context
 
 from dalle import generate_image
 from translate import to_english
+from utils import save_b64_images
 
 
 class CreateCommand(Command):
@@ -29,6 +30,7 @@ class CreateCommand(Command):
         prompt_en = to_english(prompt)
         await c.start_typing()
         generated = generate_image(prompt_en)
+        save_b64_images(generated, prompt)
         await c.stop_typing()
         await c.send(
             prompt_en,

@@ -8,7 +8,7 @@ import cv2 as cv
 
 from dalle import edit_image
 from translate import to_english
-from utils import resize_image
+from utils import resize_image, save_b64_images
 
 
 class EditCommand(Command):
@@ -41,6 +41,7 @@ class EditCommand(Command):
         image = np.array(resize_image(Image.open(io.BytesIO(attachment.data)), length=1024)) 
         mask = self._create_mask(image)
         edited = edit_image(image, mask, prompt_en, self.EDITS_COUNT)
+        save_b64_images(edited, prompt_en)
         
         await c.stop_typing()
         await c.send(

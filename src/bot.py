@@ -3,7 +3,7 @@ import logging
 
 from signalbot import SignalBot
 
-from command import DalleCommand
+from commands import CreateCommand, EditCommand
 
 
 logging.getLogger().setLevel(logging.INFO)
@@ -24,7 +24,8 @@ def main():
 
     bot.listen(group_id, internal_id)
 
-    bot.register(DalleCommand())
+    bot.register(CreateCommand())
+    bot.register(EditCommand())
 
     bot.start()
 

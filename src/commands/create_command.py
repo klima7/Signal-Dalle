@@ -1,15 +1,17 @@
 from signalbot import Command, Context
-import asyncio
 
 from dalle import generate_image
 from translate import to_english
 
 
-class DalleCommand(Command):
+class CreateCommand(Command):
     def describe(self) -> str:
         return "Respond with Dall-E generated image"
 
     async def handle(self, c: Context):
+        if c.message.base64_attachments:
+            return
+        
         prompt = c.message.text
         
         if not prompt:

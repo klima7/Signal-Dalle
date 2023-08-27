@@ -1,3 +1,6 @@
-signalbot
+git+https://github.com/klima7/signalbot
+opencv-python-headless
 openai
 deepl
+pillow
+numpy

@@ -1,3 +1,5 @@
+import os
+
 from signalbot import Command, Context
 
 from dalle import generate_image
@@ -5,6 +7,9 @@ from translate import to_english
 
 
 class CreateCommand(Command):
+    
+    CREATES_COUNT = int(os.environ.get("CREATES_COUNT", 1))
+    
     def describe(self) -> str:
         return "Respond with Dall-E generated image"
 
@@ -23,9 +28,9 @@ class CreateCommand(Command):
         
         prompt_en = to_english(prompt)
         await c.start_typing()
-        image_b64 = generate_image(prompt_en)
+        generated = generate_image(prompt_en)
         await c.stop_typing()
         await c.send(
             prompt_en,
-            base64_attachments=[image_b64],
+            base64_attachments=generated,
         )

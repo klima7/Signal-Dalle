@@ -1,4 +1,5 @@
 import io
+import os
 
 import numpy as np
 from signalbot import Command, Context
@@ -11,6 +12,8 @@ from utils import resize_image
 
 
 class EditCommand(Command):
+    
+    EDITS_COUNT = int(os.environ.get("EDITS_COUNT", 1))
     
     def describe(self) -> str:
         return "Respond with Dall-E edited image"
@@ -37,12 +40,12 @@ class EditCommand(Command):
         prompt_en = to_english(prompt)
         image = np.array(resize_image(Image.open(io.BytesIO(attachment.data)), length=1024)) 
         mask = self._create_mask(image)
-        edited = edit_image(image, mask, prompt_en)
+        edited = edit_image(image, mask, prompt_en, self.EDITS_COUNT)
         
         await c.stop_typing()
         await c.send(
             prompt_en,
-            base64_attachments=[edited]
+            base64_attachments=edited
         )
         
     @staticmethod

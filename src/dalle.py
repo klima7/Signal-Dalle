@@ -8,17 +8,18 @@ from PIL import Image
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
-def generate_image(prompt):
+def generate_image(prompt, count=1):
     response = openai.Image.create(
         prompt=prompt,
-        n=1,
+        n=count,
         size="1024x1024",
         response_format="b64_json",
     )
-    return response['data'][0]['b64_json']
+    images = [data['b64_json'] for data in response['data']]
+    return images
 
 
-def edit_image(image, mask, prompt):
+def edit_image(image, mask, prompt, count=1):
     image_bytes = _convert_img_array_to_bytes(image)
     mask_bytes = _convert_img_array_to_bytes(mask)
     
@@ -26,14 +27,15 @@ def edit_image(image, mask, prompt):
         image=image_bytes,
         mask=mask_bytes,
         prompt=prompt,
-        n=1,
+        n=count,
         size="1024x1024",
         response_format="b64_json",
     )
-    return response['data'][0]['b64_json']
+    images = [data['b64_json'] for data in response['data']]
+    return images
 
 
-def create_variations(image, count):
+def create_variations(image, count=1):
     image_bytes = _convert_img_array_to_bytes(image)
     
     response = openai.Image.create_variation(

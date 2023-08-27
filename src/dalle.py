@@ -19,18 +19,31 @@ def generate_image(prompt):
 
 
 def edit_image(image, mask, prompt):
-    image_b64 = _convert_img_array_to_bytes(image)
-    mask_b64 = _convert_img_array_to_bytes(mask)
+    image_bytes = _convert_img_array_to_bytes(image)
+    mask_bytes = _convert_img_array_to_bytes(mask)
     
     response = openai.Image.create_edit(
-        image=image_b64,
-        mask=mask_b64,
+        image=image_bytes,
+        mask=mask_bytes,
         prompt=prompt,
         n=1,
         size="1024x1024",
         response_format="b64_json",
     )
     return response['data'][0]['b64_json']
+
+
+def create_variations(image, count):
+    image_bytes = _convert_img_array_to_bytes(image)
+    
+    response = openai.Image.create_variation(
+        image=image_bytes,
+        n=count,
+        size="1024x1024",
+        response_format="b64_json",
+    )
+    images = [data['b64_json'] for data in response['data']]
+    return images
 
 
 def _convert_img_array_to_bytes(img_array):

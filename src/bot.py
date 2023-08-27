@@ -3,7 +3,7 @@ import logging
 
 from signalbot import SignalBot
 
-from commands import CreateCommand, EditCommand
+from commands import CreateCommand, EditCommand, VariationsCommand
 
 
 logging.getLogger().setLevel(logging.INFO)
@@ -26,6 +26,7 @@ def main():
 
     bot.register(CreateCommand())
     bot.register(EditCommand())
+    bot.register(VariationsCommand())
 
     bot.start()
 

@@ -9,10 +9,11 @@ class CreateCommand(Command):
         return "Respond with Dall-E generated image"
 
     async def handle(self, c: Context):
-        if c.message.base64_attachments:
-            return
-        
         prompt = c.message.text
+        
+        # must be text without attachments not starting with #
+        if not (len(c.message.base64_attachments) == 0 and prompt and prompt[0] != '#'):
+            return
         
         if not prompt:
             await c.react('🤔')
